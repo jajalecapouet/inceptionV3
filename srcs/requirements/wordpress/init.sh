@@ -30,8 +30,8 @@ else
 		require_once ABSPATH . 'wp-settings.php';
 			?>" >> /var/www/wordpress/wp-config.php
 	echo "Users creation."
-	wp core install --allow-root --url='njaros.42lyon.fr' --title='incepfion' --admin_user='pouetpouet' --admin_password='pouet' --admin_email='pouetpouet@osef.com';
-	wp user create 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author --allow-root;
+	wp core install --url='njaros.42lyon.fr' --title='incepfion' --admin_user='pouetpouet' --admin_password='pouet' --admin_email='pouetpouet@osef.com';
+	wp user create 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author;
 fi
 
 /usr/sbin/php-fpm7.3 -F

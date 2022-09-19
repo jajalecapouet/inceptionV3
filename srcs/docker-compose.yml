@@ -1,0 +1,69 @@
+version: '2.2'
+
+networks:
+  localhost:
+    name: inception_network
+
+volumes:
+  wp:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/njaros/data/wp
+      o: bind
+      type: none
+  db:
+    name: db
+    driver: local
+    driver_opts:
+      device: /home/njaros/data/db
+      o: bind
+      type: none
+
+services:
+
+  mariadb:
+    build: ./requirements/mariadb/
+    image: mariadb_img
+    container_name: mariadb
+    environment:
+      - MYSQL_DATABASE=inception
+      - MYSQL_USER=pouet
+      - MYSQL_PASSWORD=pass
+      - MYSQL_ROOT_PASSWORD=pass
+    networks:
+      - localhost
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+
+  wordpress:
+    build: ./requirements/wordpress/
+    image: wordpress_img
+    container_name: wordpress
+    environment:
+      - MYSQL_DATABASE=inception
+      - MYSQL_USER=pouet
+      - MYSQL_PASSWORD=pass
+      - MYSQL_HOSTNAME=mariadb
+    networks:
+      - localhost
+    volumes:
+      - wp:/var/www/wordpress
+    depends_on:
+      - mariadb
+    restart: always
+
+  nginx:
+    build:  ./requirements/nginx/
+    image:  nginx_img
+    container_name: nginx
+    networks:
+      - localhost
+    volumes:
+      - wp:/var/www/wordpress
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    restart: always

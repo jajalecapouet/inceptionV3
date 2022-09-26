@@ -26,7 +26,7 @@ down :
 	sudo docker-compose -f ./srcs/docker-compose.yml down
 
 vclean :
-	sudo docker volume rm db wordpress
+	sudo docker volume rm -f db wordpress
 
 prune : down vclean
 	echo y | sudo docker system prune -a

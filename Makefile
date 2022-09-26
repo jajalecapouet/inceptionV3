@@ -1,15 +1,12 @@
 all : start build run
 
-start : | dir | dir_db | dir_wp
-
-dir :
-	sudo mkdir /home/njaros/data
+start : dir_db dir_wp
 
 dir_db :
-	sudo mkdir /home/njaros/data/db
+	sudo mkdir -p /home/njaros/data/db
 
 dir_wp :
-	sudo mkdir /home/njaros/data/wp
+	sudo mkdir -p /home/njaros/data/wp
 	
 build :
 	sudo docker-compose -f ./srcs/docker-compose.yml build
@@ -17,7 +14,7 @@ build :
 run :
 	sudo docker-compose -f ./srcs/docker-compose.yml up -d
 
-re :
+re : start
 	sudo docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 clean :

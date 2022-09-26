@@ -6,6 +6,14 @@ else
 	wget https://fr.wordpress.org/latest-fr_FR.tar.gz
 	tar -xzvf latest-fr_FR.tar.gz
 	rm latest-fr_FR.tar.gz
+	if [ -f /usr/bin/wp ]
+	then
+		echo "wp-cli already installed"
+	else
+		wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+		chmod +x wp-cli.phar
+		mv wp-cli.phar /usr/bin/wp
+	fi
 	echo "<?php
 			define('DB_NAME', '${MYSQL_DATABASE}');
 			define('DB_USER', '${MYSQL_USER}');
@@ -30,8 +38,8 @@ else
 		require_once ABSPATH . 'wp-settings.php';
 			?>" >> /var/www/wordpress/wp-config.php
 	echo "Users creation."
-	wp core install --url='njaros.42lyon.fr' --title='incepfion' --admin_user='pouetpouet' --admin_password='pouet' --admin_email='pouetpouet@osef.com';
-	wp user create 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author;
+	wp core install --path='/var/www/wordpress' --url='njaros.42lyon.fr' --title='incepfion' --admin_user='pouetpouet' --admin_password='pouet' --admin_email='pouetpouet@osef.com' --allow-root;
+	wp user create --path='var/www/wordpress' --allow_root 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author;
 fi
 
 /usr/sbin/php-fpm7.3 -F

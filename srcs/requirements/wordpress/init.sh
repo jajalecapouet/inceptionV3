@@ -41,7 +41,7 @@ else
 	sleep 5
 	echo "Users creation."
 	wp core install --path='/var/www/wordpress' --url='njaros.42lyon.fr' --title='incepfion' --admin_user='pouetpouet' --admin_password='pouet' --admin_email='pouetpouet@osef.com' --allow-root;
-	wp user create --path='var/www/wordpress' --allow-root 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author;
+	wp user create --path='/var/www/wordpress' --allow-root 'michel' 'michel@lebg.fr' --user_pass='pouet' --role=author;
 fi
 
 /usr/sbin/php-fpm7.3 -F
